@@ -5,8 +5,13 @@
  */
 package views;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import sistemadevacinas.Consulta;
 import sistemadevacinas.Data;
@@ -23,7 +28,7 @@ import sistemadevacinas.Pessoa;
 public class AreaOperacional extends javax.swing.JFrame {
 
     JOptionPane optionPane = new JOptionPane();
-    
+
     //deve ter um jeito mais certo de fazer, mas sou burro... pego a variavel que recebo do outro frame e seto aqui
     Pessoa pp = new Pessoa();
 
@@ -72,8 +77,11 @@ public class AreaOperacional extends javax.swing.JFrame {
         btnConcluiPrescriscao = new javax.swing.JButton();
         btnAdicionaVacina = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        lstVacinasPreescritas = new javax.swing.JList<>();
         jLabel6 = new javax.swing.JLabel();
+        btnVoltar1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        txtNomeVacina = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -139,7 +147,7 @@ public class AreaOperacional extends javax.swing.JFrame {
                                     .addComponent(txtCartaoAgendamento)
                                     .addComponent(txtCartaoSUS)
                                     .addComponent(dcDataDaConsulta, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE))))
-                        .addContainerGap(108, Short.MAX_VALUE))
+                        .addContainerGap(178, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnVoltar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -165,7 +173,7 @@ public class AreaOperacional extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtCartaoSUS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblCartaoSus))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnVoltar)
                             .addComponent(btnMarcaConsulta))
@@ -183,24 +191,42 @@ public class AreaOperacional extends javax.swing.JFrame {
 
         jLabel7.setText("Paciente:");
 
-        cbPaciente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel9.setText("Selecione a Vacina:");
 
-        cbVacinas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbVacinas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbVacinasActionPerformed(evt);
+            }
+        });
 
         btnConcluiPrescriscao.setText("Concluir");
 
         btnAdicionaVacina.setText("Adicionar Vacina");
-
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        btnAdicionaVacina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdicionaVacinaActionPerformed(evt);
+            }
         });
-        jScrollPane1.setViewportView(jList1);
+
+        jScrollPane1.setViewportView(lstVacinasPreescritas);
 
         jLabel6.setText("Vacinas Preescritas:");
+
+        btnVoltar1.setText("Voltar");
+        btnVoltar1.setEnabled(false);
+        btnVoltar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVoltar1ActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Nome Vacina:");
+
+        txtNomeVacina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNomeVacinaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -210,10 +236,8 @@ public class AreaOperacional extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnVoltar1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnConcluiPrescriscao)
                         .addGap(28, 28, 28))
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -231,7 +255,15 @@ public class AreaOperacional extends javax.swing.JFrame {
                                         .addComponent(btnAdicionaVacina))
                                     .addComponent(cbPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(50, Short.MAX_VALUE))))
+                        .addContainerGap(148, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtNomeVacina, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel6))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,12 +279,18 @@ public class AreaOperacional extends javax.swing.JFrame {
                     .addComponent(jLabel9)
                     .addComponent(cbVacinas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAdicionaVacina))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtNomeVacina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(17, 17, 17)
-                .addComponent(btnConcluiPrescriscao)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnConcluiPrescriscao)
+                    .addComponent(btnVoltar1))
                 .addContainerGap())
         );
 
@@ -315,9 +353,12 @@ public class AreaOperacional extends javax.swing.JFrame {
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(lblIdaide))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnAplicarVacina))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnAplicarVacina)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -347,11 +388,11 @@ public class AreaOperacional extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
         );
 
         pack();
@@ -372,6 +413,49 @@ public class AreaOperacional extends javax.swing.JFrame {
         TelaLOgin x = new TelaLOgin();
         x.setVisible(true);
     }//GEN-LAST:event_btnVoltarActionPerformed
+
+    private void btnVoltar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltar1ActionPerformed
+        TelaLOgin x = new TelaLOgin();
+        x.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnVoltar1ActionPerformed
+
+    DefaultListModel<String> model = new DefaultListModel<>();
+
+    private void btnAdicionaVacinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionaVacinaActionPerformed
+
+        lstVacinasPreescritas.setModel(model);
+        if (cbVacinas.getSelectedItem().toString().toUpperCase() == "OUTRA") {
+            preencheViaTexto();
+        } else {
+            model.addElement(cbVacinas.getSelectedItem().toString());// pegar a selecao do combo
+        }
+    }//GEN-LAST:event_btnAdicionaVacinaActionPerformed
+
+    private void cbVacinasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbVacinasActionPerformed
+
+        if (cbVacinas.getSelectedItem().toString().toUpperCase() == "OUTRA") {
+            jLabel2.setVisible(true);
+            txtNomeVacina.setVisible(true);
+        } else {
+            btnAdicionaVacina.setEnabled(true);
+        }
+    }//GEN-LAST:event_cbVacinasActionPerformed
+
+    private void txtNomeVacinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeVacinaActionPerformed
+//        if (txtNomeVacina.ge) {
+//            boolean 
+//        }
+//        value = !txtNomeVacina.getText().trim().isEmpty();
+//        btnAdicionaVacina.setEnabled(value);
+    }//GEN-LAST:event_txtNomeVacinaActionPerformed
+
+    private void preencheViaTexto() {
+
+        if (!txtNomeVacina.getText().trim().isEmpty()) {
+            model.addElement(txtNomeVacina.getText());
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -414,6 +498,7 @@ public class AreaOperacional extends javax.swing.JFrame {
     private javax.swing.JButton btnConcluiPrescriscao;
     private javax.swing.JButton btnMarcaConsulta;
     private javax.swing.JButton btnVoltar;
+    private javax.swing.JButton btnVoltar1;
     private javax.swing.JComboBox<String> cbPaciente;
     private javax.swing.JComboBox<String> cbVacinas;
     private com.toedter.calendar.JDateChooser dcDataDaConsulta;
@@ -422,12 +507,12 @@ public class AreaOperacional extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -440,9 +525,11 @@ public class AreaOperacional extends javax.swing.JFrame {
     private javax.swing.JLabel lblCartaoSus;
     private javax.swing.JLabel lblIdaide;
     private javax.swing.JLabel lblValidaConsultaMarcada;
+    private javax.swing.JList<String> lstVacinasPreescritas;
     private javax.swing.JTextField txtCartaoAgendamento;
     private javax.swing.JTextField txtCartaoSUS;
     private javax.swing.JTextField txtNomePaciente;
+    private javax.swing.JTextField txtNomeVacina;
     // End of variables declaration//GEN-END:variables
 
     public boolean marcaConsulta(Pessoa p) {
@@ -594,6 +681,7 @@ public class AreaOperacional extends javax.swing.JFrame {
                 jTabbedPane1.setEnabledAt(0, false);
                 jTabbedPane1.setEnabledAt(2, false);
                 jTabbedPane1.setSelectedIndex(1);
+                carregaDadosMedico(p);
                 break;
             default:
                 // tabbedPane.setEnabledAt(2, true);
@@ -601,6 +689,46 @@ public class AreaOperacional extends javax.swing.JFrame {
                 jTabbedPane1.setEnabledAt(1, false);
                 jTabbedPane1.setSelectedIndex(2);
                 break;
-        }   
+        }
+    }
+
+    public void carregaDadosMedico(Pessoa p) {
+        lblBoasVindas.setText("Bem vindo " + p.getNome());
+
+        jLabel2.setVisible(false);
+        txtNomeVacina.setVisible(false);
+
+        btnAdicionaVacina.setEnabled(false);
+
+        // popular com os pacientes cadastrados:
+        populaPacientes();
+        //cbPaciente
+        // popular com a lista de vacinas
+        // cbVacinas
+        populaVacinas();
+        //se o viado selecionar Outras habilitar o campo txtNomeVacina
+
+        //btnAdicionaVacina 
+        // responsavel por vincular uma vacina a um paciente
+        //carregará os dados incluidos pelo médico
+        //lstVacinasPreescritas 
+    }
+
+    public void populaPacientes() {
+        List<String> pacientes = new ArrayList<String>();
+        
+        pacientes.add(pp.getNome());
+        cbPaciente.setModel(new DefaultComboBoxModel<String>(pacientes.toArray(new String[0])));
+    }
+
+    public void populaVacinas() {
+        List<String> vacinas = new ArrayList<String>();
+        vacinas.add("Sarampo");
+        vacinas.add("H1N1");
+        vacinas.add("Meningite");
+        vacinas.add("Malária");
+        vacinas.add("Covid1-9");
+        vacinas.add("Outra");
+        cbVacinas.setModel(new DefaultComboBoxModel<String>(vacinas.toArray(new String[0])));
     }
 }
