@@ -7,9 +7,12 @@ package views;
 
 import java.awt.Dialog.ModalityType;
 import java.util.Objects;
+import javax.swing.JOptionPane;
+import sistemadevacinas.Consulta;
 import sistemadevacinas.Endereco;
 import sistemadevacinas.Enfermeira;
 import sistemadevacinas.Medico;
+import sistemadevacinas.Paciente;
 import sistemadevacinas.Pessoa;
 
 /**
@@ -21,13 +24,23 @@ public class TelaLOgin extends javax.swing.JFrame {
     /**
      * Creates new form TelaLOgin
      */
+    JOptionPane optionPane = new JOptionPane();
     private Pessoa p1 = new Pessoa();
     private Medico m1 = new Medico();
     private Enfermeira e1 = new Enfermeira();
+    private Paciente pqp = new Paciente();
+    private Consulta c = new Consulta();
 
     public TelaLOgin() {
         initComponents();
         inicializacao();
+    }
+
+    public TelaLOgin(Paciente paciente, Consulta consulta) {
+        initComponents();
+        inicializacao();
+        pqp = paciente;
+        c = consulta;
     }
 
     private void inicializacao() {
@@ -152,7 +165,7 @@ public class TelaLOgin extends javax.swing.JFrame {
                 dispose();
             } else if (cbPerfil.getSelectedIndex() == 1)// medico
             {
-                AreaOperacional telaMarcaConsulta = new AreaOperacional(m1, cbPerfil.getSelectedIndex());
+                AreaOperacional telaMarcaConsulta = new AreaOperacional(m1, cbPerfil.getSelectedIndex(), pqp, c);
                 telaMarcaConsulta.setVisible(true);
                 //  frame.dispose();
             } else// enfermeira
@@ -161,6 +174,8 @@ public class TelaLOgin extends javax.swing.JFrame {
                 telaMarcaConsulta.setVisible(true);
                 // frame.dispose();
             }
+        } else {
+            optionPane.showMessageDialog(null, "Acesso negado!");
         }
     }//GEN-LAST:event_btnAcessarActionPerformed
 

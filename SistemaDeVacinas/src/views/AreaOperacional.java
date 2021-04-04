@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -31,6 +32,9 @@ public class AreaOperacional extends javax.swing.JFrame {
 
     //deve ter um jeito mais certo de fazer, mas sou burro... pego a variavel que recebo do outro frame e seto aqui
     Pessoa pp = new Pessoa();
+    Paciente pMemoria = new Paciente();
+    Consulta consMemoria = new Consulta();
+    Consulta cDumby = new Consulta();
 
     /**
      * Creates new form AreaOperacional
@@ -41,9 +45,18 @@ public class AreaOperacional extends javax.swing.JFrame {
 
     public AreaOperacional(Pessoa p1, int perfil) {
         initComponents();
-        inicializaComponentes(perfil, p1);
+        inicializaComponentes(perfil, p1, cDumby);
         // aqui continuo a gambiarra kkk
         pp = p1;
+    }
+
+    public AreaOperacional(Pessoa p1, int perfil, Paciente pac, Consulta c) {
+        initComponents();
+        inicializaComponentes(perfil, p1, c);
+        // aqui continuo a gambiarra kkk
+        pp = p1;
+        populaPacientes(pac);
+        consMemoria = c;
     }
 
     /**
@@ -55,6 +68,7 @@ public class AreaOperacional extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel5 = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -82,6 +96,8 @@ public class AreaOperacional extends javax.swing.JFrame {
         btnVoltar1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         txtNomeVacina = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -92,6 +108,8 @@ public class AreaOperacional extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
         lblIdaide = new javax.swing.JLabel();
+
+        jLabel5.setText("jLabel5");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -163,10 +181,11 @@ public class AreaOperacional extends javax.swing.JFrame {
                     .addComponent(jLabel1))
                 .addGap(29, 29, 29)
                 .addComponent(lblValidaConsultaMarcada)
-                .addGap(27, 27, 27)
+                .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3)
                     .addComponent(dcDataDaConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(25, 25, 25)
@@ -200,6 +219,11 @@ public class AreaOperacional extends javax.swing.JFrame {
         });
 
         btnConcluiPrescriscao.setText("Concluir");
+        btnConcluiPrescriscao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConcluiPrescriscaoActionPerformed(evt);
+            }
+        });
 
         btnAdicionaVacina.setText("Adicionar Vacina");
         btnAdicionaVacina.addActionListener(new java.awt.event.ActionListener() {
@@ -228,6 +252,8 @@ public class AreaOperacional extends javax.swing.JFrame {
             }
         });
 
+        jLabel13.setText("jLabel13");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -249,11 +275,13 @@ public class AreaOperacional extends javax.swing.JFrame {
                                     .addComponent(jLabel9))
                                 .addGap(33, 33, 33)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(cbVacinas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(72, 72, 72)
-                                        .addComponent(btnAdicionaVacina))
-                                    .addComponent(cbPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(cbVacinas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cbPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(72, 72, 72)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(btnAdicionaVacina)
+                                    .addComponent(jLabel13)))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(148, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -273,7 +301,9 @@ public class AreaOperacional extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel13))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
@@ -410,7 +440,7 @@ public class AreaOperacional extends javax.swing.JFrame {
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         dispose();
-        TelaLOgin x = new TelaLOgin();
+        TelaLOgin x = new TelaLOgin(pMemoria, consMemoria);
         x.setVisible(true);
     }//GEN-LAST:event_btnVoltarActionPerformed
 
@@ -424,21 +454,35 @@ public class AreaOperacional extends javax.swing.JFrame {
 
     private void btnAdicionaVacinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionaVacinaActionPerformed
 
+        // Selecione
         lstVacinasPreescritas.setModel(model);
-        if (cbVacinas.getSelectedItem().toString().toUpperCase() == "OUTRA") {
-            preencheViaTexto();
+        if (!Objects.equals(cbVacinas.getSelectedItem().toString().toUpperCase(), "SELECIONE")) {
+            if (Objects.equals(cbVacinas.getSelectedItem().toString().toUpperCase(), "OUTRA")) {
+                preencheViaTexto();
+            } else {
+                // ficari mais bonito se tivesse uma validação se já existe no combo, mas a preguiça venceu
+                model.addElement(cbVacinas.getSelectedItem().toString());// pegar a selecao do combo
+            }
         } else {
-            model.addElement(cbVacinas.getSelectedItem().toString());// pegar a selecao do combo
+            jLabel2.setVisible(false);
+            txtNomeVacina.setVisible(false);
+            btnAdicionaVacina.setEnabled(false);
         }
     }//GEN-LAST:event_btnAdicionaVacinaActionPerformed
 
     private void cbVacinasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbVacinasActionPerformed
 
-        if (cbVacinas.getSelectedItem().toString().toUpperCase() == "OUTRA") {
-            jLabel2.setVisible(true);
-            txtNomeVacina.setVisible(true);
+        if (!Objects.equals(cbVacinas.getSelectedItem().toString().toUpperCase(), "SELECIONE")) {
+            if (Objects.equals(cbVacinas.getSelectedItem().toString().toUpperCase(), "OUTRA")) {
+                jLabel2.setVisible(true);
+                txtNomeVacina.setVisible(true);
+            } else {
+                btnAdicionaVacina.setEnabled(true);
+            }
         } else {
-            btnAdicionaVacina.setEnabled(true);
+            jLabel2.setVisible(false);
+            txtNomeVacina.setVisible(false);
+            btnAdicionaVacina.setEnabled(false);
         }
     }//GEN-LAST:event_cbVacinasActionPerformed
 
@@ -449,6 +493,26 @@ public class AreaOperacional extends javax.swing.JFrame {
 //        value = !txtNomeVacina.getText().trim().isEmpty();
 //        btnAdicionaVacina.setEnabled(value);
     }//GEN-LAST:event_txtNomeVacinaActionPerformed
+
+    private void btnConcluiPrescriscaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConcluiPrescriscaoActionPerformed
+
+        //
+        if (lstVacinasPreescritas.getModel().getSize() > 0) {
+            for (int i = 0; i < lstVacinasPreescritas.getModel().getSize(); i++) {
+
+                Object item = lstVacinasPreescritas.getModel().getElementAt(i);
+                consMemoria.setVacinas(item.toString());
+            }
+            btnVoltar1.setEnabled(true);
+        } else
+        {
+            optionPane.showMessageDialog(null, "Necessário incluir ao menos uma vacina!");
+        }
+        
+        // validar se populou
+        //if (consMemoria.getVacinas())
+        
+    }//GEN-LAST:event_btnConcluiPrescriscaoActionPerformed
 
     private void preencheViaTexto() {
 
@@ -507,8 +571,11 @@ public class AreaOperacional extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -546,6 +613,8 @@ public class AreaOperacional extends javax.swing.JFrame {
                         p.getSenha(), p.getEndereco(), txtCartaoAgendamento.getText(),
                         Integer.parseInt(txtCartaoSUS.getText()));
 
+                pMemoria = pac;
+
                 // Medico-- além dos dados da pessoa, passo os exclusivos de medico
                 Medico m1 = new Medico(
                         "medico teste", 29, 404882, "pedrogaudio@live.com", "medico", "1234", new Endereco("Rua Teste",
@@ -568,6 +637,8 @@ public class AreaOperacional extends javax.swing.JFrame {
                 consulta.setPaciente(pac);
                 consulta.setEnfermeira(e1);
                 consulta.setData(dc);
+
+                consMemoria = consulta;
 
                 return true;
 
@@ -638,7 +709,7 @@ public class AreaOperacional extends javax.swing.JFrame {
         btnVoltar.setEnabled(true);
     }
 
-    public void inicializaComponentes(int perfil, Pessoa p) {
+    public void inicializaComponentes(int perfil, Pessoa p, Consulta c) {
         // paciente
         switch (perfil) {
             // medico
@@ -681,7 +752,7 @@ public class AreaOperacional extends javax.swing.JFrame {
                 jTabbedPane1.setEnabledAt(0, false);
                 jTabbedPane1.setEnabledAt(2, false);
                 jTabbedPane1.setSelectedIndex(1);
-                carregaDadosMedico(p);
+                carregaDadosMedico(p, c);
                 break;
             default:
                 // tabbedPane.setEnabledAt(2, true);
@@ -692,8 +763,9 @@ public class AreaOperacional extends javax.swing.JFrame {
         }
     }
 
-    public void carregaDadosMedico(Pessoa p) {
+    public void carregaDadosMedico(Pessoa p, Consulta c) {
         lblBoasVindas.setText("Bem vindo " + p.getNome());
+        jLabel13.setText("Cartão do SUS: " + c.getPaciente().getCartaoDoSus());
 
         jLabel2.setVisible(false);
         txtNomeVacina.setVisible(false);
@@ -701,7 +773,7 @@ public class AreaOperacional extends javax.swing.JFrame {
         btnAdicionaVacina.setEnabled(false);
 
         // popular com os pacientes cadastrados:
-        populaPacientes();
+        //populaPacientes();
         //cbPaciente
         // popular com a lista de vacinas
         // cbVacinas
@@ -714,15 +786,16 @@ public class AreaOperacional extends javax.swing.JFrame {
         //lstVacinasPreescritas 
     }
 
-    public void populaPacientes() {
+    public void populaPacientes(Paciente pac) {
         List<String> pacientes = new ArrayList<String>();
-        
-        pacientes.add(pp.getNome());
+
+        pacientes.add(pac.getNome());
         cbPaciente.setModel(new DefaultComboBoxModel<String>(pacientes.toArray(new String[0])));
     }
 
     public void populaVacinas() {
         List<String> vacinas = new ArrayList<String>();
+        vacinas.add("Selecione");
         vacinas.add("Sarampo");
         vacinas.add("H1N1");
         vacinas.add("Meningite");
