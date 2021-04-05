@@ -478,7 +478,11 @@ public class AreaOperacional extends javax.swing.JFrame {
                 preencheViaTexto();
             } else {
                 // ficari mais bonito se tivesse uma validação se já existe no combo, mas a preguiça venceu
-                model.addElement(cbVacinas.getSelectedItem().toString());// pegar a selecao do combo
+                if (!validaJaPreescreveu(cbVacinas.getSelectedItem().toString())) {
+                    model.addElement(cbVacinas.getSelectedItem().toString());// pegar a selecao do combo
+                } else {
+                    optionPane.showMessageDialog(null, "Vacina já prescrita para este paciente!");
+                }
             }
         } else {
             jLabel2.setVisible(false);
@@ -486,6 +490,22 @@ public class AreaOperacional extends javax.swing.JFrame {
             btnAdicionaVacina.setEnabled(false);
         }
     }//GEN-LAST:event_btnAdicionaVacinaActionPerformed
+
+    private boolean validaJaPreescreveu(String v) {
+        boolean ja = false;
+
+        ArrayList<String> listaVacinasPrescritas = new ArrayList<>();
+
+        for (int i = 0; i < lstVacinasPreescritas.getModel().getSize(); i++) {
+            listaVacinasPrescritas.add(lstVacinasPreescritas.getModel().getElementAt(i).toUpperCase());
+        }
+
+        if (listaVacinasPrescritas.contains(v.toUpperCase())) {
+            ja = true;
+        }
+
+        return ja;
+    }
 
     private void cbVacinasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbVacinasActionPerformed
 
@@ -589,7 +609,11 @@ public class AreaOperacional extends javax.swing.JFrame {
     private void preencheViaTexto() {
 
         if (!txtNomeVacina.getText().trim().isEmpty()) {
-            model.addElement(txtNomeVacina.getText());
+            if (!validaJaPreescreveu(txtNomeVacina.getText().toString())) {
+                model.addElement(txtNomeVacina.getText());
+            } else {
+                optionPane.showMessageDialog(null, "Vacina já prescrita para este paciente!");
+            }
         } else {
             optionPane.showMessageDialog(null, "Digite o nome da vacina!");
         }
