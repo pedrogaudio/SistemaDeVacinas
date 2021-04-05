@@ -110,6 +110,7 @@ public class AreaOperacional extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         lblIdaide = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
 
         jLabel5.setText("jLabel5");
 
@@ -335,6 +336,11 @@ public class AreaOperacional extends javax.swing.JFrame {
         jLabel12.setText("Vacinas Preescritas:");
 
         btnAplicarVacina.setText("Aplicar Vacina");
+        btnAplicarVacina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAplicarVacinaActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -352,6 +358,7 @@ public class AreaOperacional extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
+        jTable1.setEnabled(false);
         jScrollPane3.setViewportView(jTable1);
 
         jLabel8.setText("Idade do Paciente: ");
@@ -360,10 +367,18 @@ public class AreaOperacional extends javax.swing.JFrame {
 
         jLabel14.setText("jLabel14");
 
+        jLabel15.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel15.setText("jLabel15");
+        jLabel15.setEnabled(false);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnAplicarVacina)
+                .addContainerGap())
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -380,16 +395,13 @@ public class AreaOperacional extends javax.swing.JFrame {
                         .addContainerGap(193, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel15)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(lblIdaide))
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAplicarVacina)
-                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -410,8 +422,10 @@ public class AreaOperacional extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(jLabel15)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                 .addComponent(btnAplicarVacina)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
         );
 
         jTabbedPane1.addTab("Área Enfermaria", jPanel3);
@@ -424,7 +438,7 @@ public class AreaOperacional extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
         );
 
         pack();
@@ -479,6 +493,7 @@ public class AreaOperacional extends javax.swing.JFrame {
             if (Objects.equals(cbVacinas.getSelectedItem().toString().toUpperCase(), "OUTRA")) {
                 jLabel2.setVisible(true);
                 txtNomeVacina.setVisible(true);
+                btnAdicionaVacina.setEnabled(true);
             } else {
                 btnAdicionaVacina.setEnabled(true);
             }
@@ -499,7 +514,6 @@ public class AreaOperacional extends javax.swing.JFrame {
 
     private void btnConcluiPrescriscaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConcluiPrescriscaoActionPerformed
 
-        //
         ArrayList<String> xpto = new ArrayList<>();
         if (lstVacinasPreescritas.getModel().getSize() > 0) {
             for (int i = 0; i < lstVacinasPreescritas.getModel().getSize(); i++) {
@@ -507,26 +521,77 @@ public class AreaOperacional extends javax.swing.JFrame {
                 Object item = lstVacinasPreescritas.getModel().getElementAt(i);
                 xpto.add(item.toString());
             }
-
         } else {
             optionPane.showMessageDialog(null, "Necessário incluir ao menos uma vacina!");
         }
 
         // validar se populou
         //if (consMemoria.getVacinas())
-        consMemoria.setVacinas(xpto);
-        pMemoria = consMemoria.getPaciente();
-        btnVoltar1.setEnabled(true);
-        btnConcluiPrescriscao.setEnabled(false);
-        optionPane.showMessageDialog(null, "Vacinas prescritas com sucesso!");
-
-
+        if (!xpto.isEmpty()) {
+            consMemoria.setVacinas(xpto);
+            pMemoria = consMemoria.getPaciente();
+            btnVoltar1.setEnabled(true);
+            btnConcluiPrescriscao.setEnabled(false);
+            btnAdicionaVacina.setEnabled(false);
+            lstVacinasPreescritas.setEnabled(false);
+            txtNomeVacina.setEnabled(false);
+            cbVacinas.setEnabled(false);
+            optionPane.showMessageDialog(null, "Vacinas prescritas com sucesso!");
+        } else {
+            optionPane.showMessageDialog(null, "Falha na inclusão das vacinas, por gentileza, tente novamente!");
+        }
     }//GEN-LAST:event_btnConcluiPrescriscaoActionPerformed
+
+    private void btnAplicarVacinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAplicarVacinaActionPerformed
+        // aplicar o primeir do grid que esteja com a flag marcado = false
+        //jTable1
+
+        // deve ter um jeito mais inteligente, mas a preguiça venceu de pesquisar
+        // se ainda existe algum marcado como false, continuo a liberar o botão de aplicação
+        if (podeAplicarVacina()) {
+            for (int i = 0; i < jTable1.getRowCount(); i++) {
+                String marcado = jTable1.getModel().getValueAt(i, 2).toString();
+                String dose = jTable1.getModel().getValueAt(i, 1).toString();
+                String vacina = jTable1.getModel().getValueAt(i, 0).toString();
+                String mensagem = "Aplicada a vacina " + vacina + " com a seguinte dosagem: " + dose;
+
+                if (Objects.equals(marcado.toUpperCase(), "FALSE")) {
+                    jTable1.getModel().setValueAt(true, i, 2);
+                    optionPane.showMessageDialog(null, mensagem);
+                    break;
+                }
+            }
+        }
+        // chamo novamente, pois se for a ultima vacina, eu bloqueio os campos
+        podeAplicarVacina();
+    }//GEN-LAST:event_btnAplicarVacinaActionPerformed
+
+    public boolean podeAplicarVacina() {
+        boolean pode = false;
+
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            String marcado = jTable1.getModel().getValueAt(i, 2).toString();
+            if (Objects.equals(marcado.toUpperCase(), "FALSE")) {
+                pode = true;
+                break;
+            }
+        }
+
+        if (!pode) {
+            btnAplicarVacina.setEnabled(false);
+            jLabel15.setVisible(true);
+            jLabel15.setText("Todas as vacinas deste paciente já foram aplicadas.");
+        }
+
+        return pode;
+    }
 
     private void preencheViaTexto() {
 
         if (!txtNomeVacina.getText().trim().isEmpty()) {
             model.addElement(txtNomeVacina.getText());
+        } else {
+            optionPane.showMessageDialog(null, "Digite o nome da vacina!");
         }
     }
 
@@ -582,6 +647,7 @@ public class AreaOperacional extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -814,6 +880,8 @@ public class AreaOperacional extends javax.swing.JFrame {
             rowData[2] = false;
             m.addRow(rowData);
         }
+
+        jLabel15.setVisible(false);
     }
 
     public void populaPacientes(Paciente pac, int perfil) {
