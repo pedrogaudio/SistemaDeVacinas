@@ -39,7 +39,11 @@ public class TelaLOgin extends javax.swing.JFrame {
     public TelaLOgin(Paciente paciente, Consulta consulta) {
         initComponents();
         inicializacao();
-        pqp = paciente;
+        if (paciente == null && consulta != null) {
+            pqp = consulta.getPaciente();
+        } else {
+            pqp = paciente;
+        }
         c = consulta;
     }
 
@@ -167,11 +171,13 @@ public class TelaLOgin extends javax.swing.JFrame {
             {
                 AreaOperacional telaMarcaConsulta = new AreaOperacional(m1, cbPerfil.getSelectedIndex(), pqp, c);
                 telaMarcaConsulta.setVisible(true);
+                dispose();
                 //  frame.dispose();
             } else// enfermeira
             {
-                AreaOperacional telaMarcaConsulta = new AreaOperacional(e1, cbPerfil.getSelectedIndex());
+                AreaOperacional telaMarcaConsulta = new AreaOperacional(e1, cbPerfil.getSelectedIndex(), pqp, c);
                 telaMarcaConsulta.setVisible(true);
+                dispose();
                 // frame.dispose();
             }
         } else {

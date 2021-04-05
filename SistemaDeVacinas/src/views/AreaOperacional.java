@@ -14,6 +14,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import sistemadevacinas.Consulta;
 import sistemadevacinas.Data;
 import sistemadevacinas.Endereco;
@@ -55,7 +56,7 @@ public class AreaOperacional extends javax.swing.JFrame {
         inicializaComponentes(perfil, p1, c);
         // aqui continuo a gambiarra kkk
         pp = p1;
-        populaPacientes(pac);
+        populaPacientes(pac, perfil);
         consMemoria = c;
     }
 
@@ -102,12 +103,13 @@ public class AreaOperacional extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbPaciente2 = new javax.swing.JComboBox<>();
         btnAplicarVacina = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
         lblIdaide = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
 
         jLabel5.setText("jLabel5");
 
@@ -332,16 +334,11 @@ public class AreaOperacional extends javax.swing.JFrame {
 
         jLabel12.setText("Vacinas Preescritas:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         btnAplicarVacina.setText("Aplicar Vacina");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Vacina", "Dose ", "Aplicado?"
@@ -361,6 +358,8 @@ public class AreaOperacional extends javax.swing.JFrame {
 
         lblIdaide.setText("Idade");
 
+        jLabel14.setText("jLabel14");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -374,9 +373,11 @@ public class AreaOperacional extends javax.swing.JFrame {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel11)
                                 .addGap(18, 18, 18)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(cbPaciente2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel14))
                             .addComponent(jLabel10))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(193, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
@@ -398,7 +399,8 @@ public class AreaOperacional extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbPaciente2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14))
                 .addGap(9, 9, 9)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
@@ -439,13 +441,14 @@ public class AreaOperacional extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMarcaConsultaActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
-        dispose();
+
         TelaLOgin x = new TelaLOgin(pMemoria, consMemoria);
         x.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnVoltar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltar1ActionPerformed
-        TelaLOgin x = new TelaLOgin();
+        TelaLOgin x = new TelaLOgin(pMemoria, consMemoria);
         x.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnVoltar1ActionPerformed
@@ -497,21 +500,27 @@ public class AreaOperacional extends javax.swing.JFrame {
     private void btnConcluiPrescriscaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConcluiPrescriscaoActionPerformed
 
         //
+        ArrayList<String> xpto = new ArrayList<>();
         if (lstVacinasPreescritas.getModel().getSize() > 0) {
             for (int i = 0; i < lstVacinasPreescritas.getModel().getSize(); i++) {
 
                 Object item = lstVacinasPreescritas.getModel().getElementAt(i);
-                consMemoria.setVacinas(item.toString());
+                xpto.add(item.toString());
             }
-            btnVoltar1.setEnabled(true);
-        } else
-        {
+
+        } else {
             optionPane.showMessageDialog(null, "Necessário incluir ao menos uma vacina!");
         }
-        
+
         // validar se populou
         //if (consMemoria.getVacinas())
-        
+        consMemoria.setVacinas(xpto);
+        pMemoria = consMemoria.getPaciente();
+        btnVoltar1.setEnabled(true);
+        btnConcluiPrescriscao.setEnabled(false);
+        optionPane.showMessageDialog(null, "Vacinas prescritas com sucesso!");
+
+
     }//GEN-LAST:event_btnConcluiPrescriscaoActionPerformed
 
     private void preencheViaTexto() {
@@ -564,14 +573,15 @@ public class AreaOperacional extends javax.swing.JFrame {
     private javax.swing.JButton btnVoltar;
     private javax.swing.JButton btnVoltar1;
     private javax.swing.JComboBox<String> cbPaciente;
+    private javax.swing.JComboBox<String> cbPaciente2;
     private javax.swing.JComboBox<String> cbVacinas;
     private com.toedter.calendar.JDateChooser dcDataDaConsulta;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -759,6 +769,7 @@ public class AreaOperacional extends javax.swing.JFrame {
                 jTabbedPane1.setEnabledAt(0, false);
                 jTabbedPane1.setEnabledAt(1, false);
                 jTabbedPane1.setSelectedIndex(2);
+                carregaDadosEnfermeira(p, c);
                 break;
         }
     }
@@ -786,22 +797,46 @@ public class AreaOperacional extends javax.swing.JFrame {
         //lstVacinasPreescritas 
     }
 
-    public void populaPacientes(Paciente pac) {
-        List<String> pacientes = new ArrayList<String>();
+    public void carregaDadosEnfermeira(Pessoa p, Consulta c) {
+        jLabel10.setText("Bem vindo " + p.getNome());
+        jLabel14.setText("Cartão do SUS: " + c.getPaciente().getCartaoDoSus());
+        lblIdaide.setText(String.valueOf(c.getPaciente().getIdade()));
+        Enfermeira e = new Enfermeira();
+        //  jTable1
+        ArrayList<String> vacinasPrescritas = c.getVacinas();
+
+        DefaultTableModel m = (DefaultTableModel) jTable1.getModel();
+        Object rowData[] = new Object[3];
+
+        for (int i = 0; i < vacinasPrescritas.size(); i++) {
+            rowData[0] = vacinasPrescritas.get(i);
+            rowData[1] = e.aplicaVacina("vacina " + vacinasPrescritas.get(i), Integer.parseInt(lblIdaide.getText()));
+            rowData[2] = false;
+            m.addRow(rowData);
+        }
+    }
+
+    public void populaPacientes(Paciente pac, int perfil) {
+
+        List<String> pacientes = new ArrayList<>();
 
         pacientes.add(pac.getNome());
-        cbPaciente.setModel(new DefaultComboBoxModel<String>(pacientes.toArray(new String[0])));
+        if (perfil == 1) {
+            cbPaciente.setModel(new DefaultComboBoxModel<>(pacientes.toArray(new String[0])));
+        } else {
+            cbPaciente2.setModel(new DefaultComboBoxModel<>(pacientes.toArray(new String[0])));
+        }
     }
 
     public void populaVacinas() {
-        List<String> vacinas = new ArrayList<String>();
+        List<String> vacinas = new ArrayList<>();
         vacinas.add("Selecione");
         vacinas.add("Sarampo");
         vacinas.add("H1N1");
         vacinas.add("Meningite");
         vacinas.add("Malária");
-        vacinas.add("Covid1-9");
+        vacinas.add("Covid19");
         vacinas.add("Outra");
-        cbVacinas.setModel(new DefaultComboBoxModel<String>(vacinas.toArray(new String[0])));
+        cbVacinas.setModel(new DefaultComboBoxModel<>(vacinas.toArray(new String[0])));
     }
 }
