@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Objects;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import sistemadevacinas.Consulta;
@@ -897,6 +896,13 @@ public class AreaOperacional extends javax.swing.JFrame {
 
         DefaultTableModel m = (DefaultTableModel) jTable1.getModel();
         Object rowData[] = new Object[3];
+
+//        for (Iterator<String> i = vacinasPrescritas.iterator(); i.hasNext();) {
+//            rowData[0] = i;
+//            rowData[1] = e.aplicaVacina("vacina " + i, Integer.parseInt(lblIdaide.getText()));
+//            rowData[2] = false;
+//            m.addRow(rowData);
+//        }
 
         for (int i = 0; i < vacinasPrescritas.size(); i++) {
             rowData[0] = vacinasPrescritas.get(i);

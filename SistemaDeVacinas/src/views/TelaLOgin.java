@@ -5,7 +5,6 @@
  */
 package views;
 
-import java.awt.Dialog.ModalityType;
 import java.util.Objects;
 import javax.swing.JOptionPane;
 import sistemadevacinas.Consulta;
@@ -160,25 +159,35 @@ public class TelaLOgin extends javax.swing.JFrame {
     private void btnAcessarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcessarActionPerformed
         if (validaAcesso(txtLogin.getText(), new String(txtSenha.getPassword()), cbPerfil.getSelectedIndex(),
                 p1, m1, e1)) {
-            if (cbPerfil.getSelectedIndex() == 0)// paciente
-            {
-                // close();
-                // abre a tela para marcação de vacinação
-                AreaOperacional telaMarcaConsulta = new AreaOperacional(p1, cbPerfil.getSelectedIndex());
-                telaMarcaConsulta.setVisible(true);
-                dispose();
-            } else if (cbPerfil.getSelectedIndex() == 1)// medico
-            {
-                AreaOperacional telaMarcaConsulta = new AreaOperacional(m1, cbPerfil.getSelectedIndex(), pqp, c);
-                telaMarcaConsulta.setVisible(true);
-                dispose();
-                //  frame.dispose();
-            } else// enfermeira
-            {
-                AreaOperacional telaMarcaConsulta = new AreaOperacional(e1, cbPerfil.getSelectedIndex(), pqp, c);
-                telaMarcaConsulta.setVisible(true);
-                dispose();
-                // frame.dispose();
+            switch (cbPerfil.getSelectedIndex()) {
+            // paciente
+                case 0:
+                    {
+                        // close();
+                        // abre a tela para marcação de vacinação
+                        AreaOperacional telaMarcaConsulta = new AreaOperacional(p1, cbPerfil.getSelectedIndex());
+                        telaMarcaConsulta.setVisible(true);
+                        dispose();
+                        break;
+                    }
+            // medico
+                case 1:
+                    {
+                        AreaOperacional telaMarcaConsulta = new AreaOperacional(m1, cbPerfil.getSelectedIndex(), pqp, c);
+                        telaMarcaConsulta.setVisible(true);
+                        dispose();
+                        //  frame.dispose();
+                        break;
+                    }
+                default:
+                    // enfermeira
+                    {
+                    AreaOperacional telaMarcaConsulta = new AreaOperacional(e1, cbPerfil.getSelectedIndex(), pqp, c);
+                    telaMarcaConsulta.setVisible(true);
+                    dispose();
+                    // frame.dispose();
+                        break;
+                    }
             }
         } else {
             optionPane.showMessageDialog(null, "Acesso negado!");
@@ -217,31 +226,30 @@ public class TelaLOgin extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TelaLOgin().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new TelaLOgin().setVisible(true);
         });
     }
 
     public boolean validaAcesso(String login, String senha, int perfil, Pessoa p1, Medico m1, Enfermeira e1) {
 
         // Pessoa p = new Pessoa();
-        if (perfil == 0) {
-            if (Objects.equals(login.toUpperCase(), p1.getLogin().toUpperCase())
-                    && Objects.equals(senha.toUpperCase(), p1.getSenha().toUpperCase())) {
-                return true;
-            }
-        } else if (perfil == 1) {
-            if (Objects.equals(login.toUpperCase(), m1.getLogin().toUpperCase())
-                    && Objects.equals(senha.toUpperCase(), m1.getSenha().toUpperCase())) {
-                return true;
-            }
-        } else {
-            if (Objects.equals(login.toUpperCase(), e1.getLogin().toUpperCase())
-                    && Objects.equals(senha.toUpperCase(), e1.getSenha().toUpperCase())) {
-                return true;
-            }
+        switch (perfil) {
+            case 0:
+                if (Objects.equals(login.toUpperCase(), p1.getLogin().toUpperCase())
+                        && Objects.equals(senha.toUpperCase(), p1.getSenha().toUpperCase())) {
+                    return true;
+                }   break;
+            case 1:
+                if (Objects.equals(login.toUpperCase(), m1.getLogin().toUpperCase())
+                        && Objects.equals(senha.toUpperCase(), m1.getSenha().toUpperCase())) {
+                    return true;
+                }   break;
+            default:
+                if (Objects.equals(login.toUpperCase(), e1.getLogin().toUpperCase())
+                        && Objects.equals(senha.toUpperCase(), e1.getSenha().toUpperCase())) {
+                    return true;
+                }   break;
         }
 
         return false;

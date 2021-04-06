@@ -1,7 +1,6 @@
 package sistemadevacinas;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Consulta {
 
@@ -10,7 +9,6 @@ public class Consulta {
 	Paciente paciente;
 	Data data;
         ArrayList<String> vacinas ;
-        private static int i = 0;
 
 	public Medico getMedico() {
 		return medico;
